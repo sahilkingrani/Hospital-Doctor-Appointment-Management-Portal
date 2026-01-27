@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hospital Appointment Portal</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              medicalBlue: "#0ea5e9",
+              medicalTeal: "#14b8a6",
+              medicalBg: "#f8fafc",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-medicalBg min-h-screen">
+    
+    <header class="bg-gradient-to-r from-medicalBlue to-medicalTeal text-white shadow">
+      <div class="max-w-7xl mx-auto px-4 py-6">
+        <h1 class="text-2xl font-semibold tracking-wide">
+          Hospital Management System Portal
+        </h1>
+        <p class="text-sm opacity-90">
+          A centralized platform for managing Doctor appointments efficiently.
+        </p>
+      </div>
+    </header>
+
+   
+    <main class="max-w-7xl mx-auto px-4 py-6">
+      
+      <div class="bg-white rounded-xl shadow-lg border border-slate-100">
+       
+        <div class="flex items-center justify-between p-4 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-medicalBlue/10 text-medicalBlue">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11 2a1 1 0 0 0-1 1v2H8a1 1 0 0 0-1 1v2H5a1 1 0 0 0-1 1v9a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9a1 1 0 0 0-1-1h-2V6a1 1 0 0 0-1-1h-2V3a1 1 0 0 0-1-1h-3Zm-3 9h8a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2Zm0 4h6a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2Z"/>
+              </svg>
+            </span>
+            <h2 class="text-lg font-semibold">Appointments</h2>
+          </div>
+          <div id="saveToast" class="hidden text-sm px-3 py-1 rounded-md bg-green-100 text-green-700">
+            Changes saved (client-side)
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+          <section class="p-4 border-r border-slate-100">
+            <div class="rounded-lg bg-slate-50 p-4">
+              <div class="overflow-x-auto">
+                <table class="min-w-full border border-slate-200 rounded-lg overflow-hidden">
+                  <thead class="bg-slate-100">
+                    <tr>
+                      <th class="px-4 py-2 text-left text-xs font-semibold text-slate-600">Appointment ID</th>
+                      <th class="px-4 py-2 text-left text-xs font-semibold text-slate-600">Patient Name</th>
+                      <th class="px-4 py-2 text-left text-xs font-semibold text-slate-600">Doctor Name</th>
+                      <th class="px-4 py-2 text-left text-xs font-semibold text-slate-600">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="appointmentsTableBody" class="divide-y divide-slate-200 bg-white"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <aside class="p-6">
+            <div class="rounded-lg border border-slate-200 shadow-sm">
+              <div class="p-4 bg-slate-50 rounded-t-lg border-b border-slate-200">
+                <h3 class="font-semibold text-slate-700">Appointment Details</h3>
+                <p class="text-sm text-slate-500">Select an appointment to view or edit</p>
+              </div>
+              <form id="appointmentForm" class="p-4 space-y-4">
+                <input type="hidden" id="apptId" />
+
+                <div>
+                  <label class="block text-sm font-medium text-slate-700">Patient Name</label>
+                  <input id="patient" type="text" class="mt-1 w-full rounded-md border-slate-300 focus:border-medicalBlue focus:ring-medicalBlue" placeholder="Patient Name" />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-slate-700">Doctor Name</label>
+                  <input id="doctor" type="text" class="mt-1 w-full rounded-md border-slate-300 focus:border-medicalBlue focus:ring-medicalBlue" placeholder="Doctor Name" />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-slate-700">Date</label>
+                    <input id="date" type="date" class="mt-1 w-full rounded-md border-slate-300 focus:border-medicalBlue focus:ring-medicalBlue" />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-slate-700">Time</label>
+                    <input id="time" type="text" class="mt-1 w-full rounded-md border-slate-300 focus:border-medicalBlue focus:ring-medicalBlue" placeholder="e.g., 10:30 AM" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-slate-700">Status</label>
+                  <select id="status" class="mt-1 w-full rounded-md border-slate-300 focus:border-medicalBlue focus:ring-medicalBlue">
+                    <option>Pending</option>
+                    <option>Approved</option>
+                    <option>Cancelled</option>
+                  </select>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-2">
+                  <button type="button" id="saveBtn" class="inline-flex items-center gap-2 rounded-md bg-medicalBlue px-4 py-2 text-white shadow hover:bg-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M4 4a2 2 0 0 1 2-2h9.586a2 2 0 0 1 1.414.586l2.414 2.414A2 2 0 0 1 20 6.414V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Zm10 0v5H7V4h7ZM7 12h10v8H7v-8Z"/>
+                    </svg>
+                    Save / Update
+                  </button>
+                </div>
+              </form>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    
+    <script>
+      
+      async function loadAppointments() {
+        const res = await fetch("/api/appointments");
+        const data = await res.json();
+        renderAppointmentsTable(data);
+      }
+
+      
+      function renderAppointmentsTable(list) {
+        const tbody = document.getElementById("appointmentsTableBody");
+        tbody.innerHTML = "";
+        list.forEach((appt) => {
+          const tr = document.createElement("tr");
+          tr.className = "hover:bg-slate-50 cursor-pointer";
+          tr.dataset.id = appt.id;
+          tr.innerHTML = `
+            <td class="px-4 py-2 text-sm text-slate-700">${appt.id}</td>
+            <td class="px-4 py-2 text-sm text-slate-700">${appt.patient}</td>
+            <td class="px-4 py-2 text-sm text-slate-700">${appt.doctor}</td>
+            <td class="px-4 py-2">
+              <span class="text-xs px-2 py-1 rounded-full
+                ${statusBadgeClass(appt.status)}">${appt.status}</span>
+            </td>`;
+          tr.addEventListener("click", () => loadAppointmentDetail(appt.id));
+          tbody.appendChild(tr);
+        });
+      }
+
+      
+      function statusBadgeClass(status) {
+        switch (status) {
+          case "Approved":
+            return "bg-green-100 text-green-700 border border-green-200";
+          case "Cancelled":
+            return "bg-red-100 text-red-700 border border-red-200";
+          default:
+            return "bg-yellow-100 text-yellow-700 border border-yellow-200";
+        }
+      }
+
+      
+      async function loadAppointmentDetail(id) {
+        const res = await fetch(`/api/appointments/${id}`);
+        const appt = await res.json();
+        if (appt.error) return;
+        document.getElementById("apptId").value = appt.id;
+        document.getElementById("patient").value = appt.patient;
+        document.getElementById("doctor").value = appt.doctor;
+        document.getElementById("date").value = appt.date;
+        document.getElementById("time").value = appt.time;
+        document.getElementById("status").value = appt.status;
+      }
+
+    
+      function setupSaveButton() {
+        const btn = document.getElementById("saveBtn");
+        const toast = document.getElementById("saveToast");
+        btn.addEventListener("click", async () => {
+          
+          const payload = {
+            id: document.getElementById("apptId").value || undefined,
+            patient: document.getElementById("patient").value.trim(),
+            doctor: document.getElementById("doctor").value.trim(),
+            date: document.getElementById("date").value,
+            time: document.getElementById("time").value.trim(),
+            status: document.getElementById("status").value
+          };
+          
+          const res = await fetch("/api/appointments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            
+            toast.textContent = data.error || "Failed to save";
+            toast.classList.remove("hidden");
+            toast.classList.remove("bg-green-100","text-green-700");
+            toast.classList.add("bg-red-100","text-red-700");
+            setTimeout(() => {
+              toast.classList.add("hidden");
+              toast.classList.remove("bg-red-100","text-red-700");
+              toast.textContent = "Changes saved (client-side)";
+            }, 2000);
+            return;
+          }
+          
+          toast.textContent = "Saved successfully";
+          toast.classList.remove("hidden");
+          toast.classList.add("bg-green-100","text-green-700");
+          setTimeout(() => {
+            toast.classList.add("hidden");
+            toast.classList.remove("bg-green-100","text-green-700");
+            toast.textContent = "Changes saved (client-side)";
+          }, 1600);
+          
+          await loadAppointments();
+        });
+      }
+
+    
+      loadAppointments();
+      setupSaveButton();
+    </script>
+  </body>
+</html>
