@@ -22,7 +22,6 @@ appointments.json       # Appointment data (persisted)
 templates/
   └─ index.html         # Portal UI and JS logic
 ```
-
 ## Getting Started
 1. Install Python 3 (Windows/macOS/Linux).
 2. Install Flask:
