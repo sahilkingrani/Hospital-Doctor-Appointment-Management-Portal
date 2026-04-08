@@ -9,7 +9,7 @@ A professional, two-panel admin-style portal for managing hospital doctor appoin
 - Tailwind CSS UI: cards, table, rounded corners, shadows, gradients
 - Data loaded from JSON and persisted via POST to the same JSON file
 - Simple, student-friendly codebase
-
+  
 ## Technology Stack
 - Frontend: HTML + Tailwind CSS (CDN) + vanilla JavaScript (Fetch API)
 - Backend: Python (Flask)
