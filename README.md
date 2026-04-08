@@ -82,7 +82,7 @@ templates/
 curl -X POST http://127.0.0.1:5900/api/appointments \
   -H "Content-Type: application/json" \
   -d '{"patient":"Test User","doctor":"Dr. Verify","date":"2026-02-13","time":"11:00 AM","status":"Pending"}'
-```
+``
 
 ## Data Persistence Details
 - File: `appointments.json` in the project root
