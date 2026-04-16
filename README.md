@@ -113,4 +113,4 @@ curl -X POST http://127.0.0.1:5900/api/appointments \
   - Form validation and disabled state while saving
 
 ## License
-Use freely for learning and internal projects.
+Use freely for learning and internal project.
