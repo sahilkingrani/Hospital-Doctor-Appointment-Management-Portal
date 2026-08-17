@@ -1,4 +1,4 @@
-# Hospital / Doctor Appointment Management Portal
+# Hospital System -- Doctor Appointment Management Portal
 
 
 A professional, two-panel admin-style portal for managing hospital doctor appointments. It uses Flask (Python) on the backend, Tailwind CSS for styling, and vanilla JavaScript with the Fetch API for a clean, responsive experience that feels like a modern government service portal.
